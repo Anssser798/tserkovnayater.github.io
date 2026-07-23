@@ -707,43 +707,51 @@
                 }
 
                 const entries = HEAL_TABLE[heightKey];
-                const sorted = entries.slice().sort((a, b) => a.h - b.h);
+const sorted = entries.slice().sort((a, b) => a.h - b.h);
 
-                let found = null;
-                for (const entry of sorted) {
-                    const totalHeal = mouth * entry.p;
-                    if (totalHeal >= health - 0.0001) {
-                        found = entry;
-                        break;
-                    }
-                }
+let foundTime = null;
+let foundCount = 0;
+let foundP = 0;
 
-                if (found) {
-                    const hours = found.h;
-                    const healPerOne = found.p;
-                    const totalHeal = mouth * healPerOne;
-                    const hoursStr = Number.isInteger(hours) ? hours.toString() : hours.toFixed(1);
-                   const endDate = getEndDate(hours);
-                    
-                    resultDiv.innerHTML =
-                    '<span class="success">Для полного лечения вам нужно носить <strong>' +
-                    mouth + ' ' + (mouth === 1 ? 'костоправ' : 'костоправа') +
-                        '</strong> <strong>' + hoursStr + ' ' + declHours(hours) + '</strong>.' +
-                     '<br>Снять <strong>' + endDate + '</strong>' +
-                    '<br><span style="font-size:14px; color:#7b7058;">' +
-                'Каждый лечит ' + healPerOne.toFixed(2) + '%, всего ' + totalHeal.toFixed(2) +
-                    '% от потерянного здоровья.</span></span>';
-                } else {
-                    const maxTotal = Math.max(...sorted.map(e => mouth * e.p));
-                    resultDiv.innerHTML =
-                        '<span class="error">Не удаётся вылечить ' + health.toFixed(1) +
-                        '% потерянного здоровья.<br>' +
-                        'Максимальное лечение с ' + mouth + ' ' + (mouth === 1 ? 'костоправом' : 'костоправами') +
-                        ' составляет ' + maxTotal.toFixed(2) +
-                        '%.<br>Попробуйте увеличить количество мест во рту.</span>';
-                }
+for (const entry of sorted) {
+    const p = entry.p;
+    for (let k = 1; k <= mouth; k++) {
+        if (k * p >= health - 0.0001) {
+            foundTime = entry.h;
+            foundCount = k;
+            foundP = p;
+            break;
+        }
+    }
+ if (foundTime !== null) break; // выходим из внешнего цикла
+}
+
+if (foundTime !== null) {
+    const hours = foundTime;
+    const count = foundCount;
+    const healPerOne = foundP;
+    const totalHeal = count * healPerOne;
+    const hoursStr = Number.isInteger(hours) ? hours.toString() : hours.toFixed(1);
+    const endDate = getEndDate(hours);
+
+    resultDiv.innerHTML =
+        '<span class="success">Для полного лечения вам нужно носить <strong>' +
+        count + ' ' + (count === 1 ? 'костоправ' : 'костоправа') +
+        '</strong> <strong>' + hoursStr + ' ' + declHours(hours) + '</strong>.' +
+        '<br>Снять <strong>' + endDate + '</strong>' +
+        '<br><span style="font-size:14px; color:#7b7058;">' +
+        'Каждый лечит ' + healPerOne.toFixed(2) + '%, всего ' + totalHeal.toFixed(2) +
+        '% от потерянного здоровья.</span></span>';
+} else {
+    const maxTotal = Math.max(...sorted.map(e => mouth * e.p));
+    resultDiv.innerHTML =
+        '<span class="error">Не удаётся вылечить ' + health.toFixed(1) +
+        '% потерянного здоровья.<br>' +
+        'Максимальное лечение с ' + mouth + ' ' + (mouth === 1 ? 'костоправом' : 'костоправами') +
+        ' составляет ' + maxTotal.toFixed(2) +
+        '%.<br>Попробуйте увеличить количество мест во рту.</span>';
+}
             }
-
             calcBtn.addEventListener('click', calculate);
 
             document.addEventListener('keydown', function (e) {
