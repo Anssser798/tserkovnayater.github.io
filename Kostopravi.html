@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Костоправы</title>
+    <style>
+        /* ----- общие сбросы и шрифт ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2a1d18;
+            background-image: url('https://i.pinimg.com/1200x/36/19/ae/3619ae1b13628182a9e45468977819b9.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(42, 29, 24, 0.55);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            z-index: 0;
+        }
+
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            max-width: 560px;
+            width: 100%;
+            background: rgba(42, 29, 24, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 36px;
+            padding: 36px 40px 40px;
+            border: 1px solid rgba(123, 112, 88, 0.3);
+            /* #7b7058 */
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(181, 141, 101, 0.08);
+            transition: all 0.2s;
+        }
+
+        /* ----- шапка ----- */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+
+        .header-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .crest {
+            flex-shrink: 0;
+            width: 240px;
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+        }
+
+        .crest img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .header-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-top: 4px;
+            align-items: center;
+        }
+
+        .header-text h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #b58d65;
+            letter-spacing: -0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+        }
+
+        .header-text .badge {
+            font-size: 14px;
+            font-weight: 400;
+            color: #7b7058;
+            background: rgba(42, 29, 24, 0.5);
+            padding: 2px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(123, 112, 88, 0.3);
+            display: inline-block;
+            align-self: flex-start;
+        }
+
+        .subtitle {
+            color: #8d8374;
+            font-size: 14px;
+            padding-left: 16px;
+            border-left: 3px solid #987652;
+            opacity: 0.9;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0;
+        }
+
+        /* ----- описание ----- */
+        .description {
+            color: #8d8374;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            padding: 0 2px;
+        }
+
+        .description a {
+            color: #b58d65;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed #7b7058;
+            transition: 0.2s;
+        }
+
+        .description a:hover {
+            color: #d4b48c;
+            border-bottom-color: #b58d65;
+        }
+
+        /* ----- поля ввода ----- */
+        .field {
+            margin-bottom: 22px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            color: #b58d65;
+            margin-bottom: 5px;
+            letter-spacing: 0.2px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .field .hint {
+            font-size: 13px;
+            color: #7b7058;
+            font-weight: 400;
+            margin-left: 8px;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .input-row input[type="number"] {
+            flex: 1;
+            background: rgba(42, 29, 24, 0.7);
+            border: 1px solid rgba(123, 112, 88, 0.4);
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #e8ddd0;
+            outline: none;
+            transition: 0.25s;
+            min-width: 0;
+            width: 100%;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-row input[type="number"]:focus {
+            border-color: #b58d65;
+            background: rgba(42, 29, 24, 0.9);
+            box-shadow: 0 0 0 3px rgba(181, 141, 101, 0.2);
+        }
+
+        .input-row input[type="number"]:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: rgba(42, 29, 24, 0.4);
+        }
+
+        .input-row .unit {
+            font-size: 15px;
+            color: #7b7058;
+            font-weight: 500;
+            min-width: 22px;
+        }
+
+        .checkbox-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            padding-left: 2px;
+        }
+
+        .checkbox-wrap input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #987652;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checkbox-wrap label {
+            font-size: 14px;
+            color: #8d8374;
+            cursor: pointer;
+            font-weight: 400;
+            margin-bottom: 0;
+        }
+
+        /* ----- кнопка ----- */
+        .btn {
+            width: 100%;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            background: linear-gradient(145deg, #987652, #7b7058);
+            color: #f5f0e0;
+            cursor: pointer;
+            transition: all 0.25s;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+            box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.6);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px -10px rgba(0, 0, 0, 0.7);
+            background: linear-gradient(145deg, #a8865e, #8a7b62);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 14px -4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ----- результат ----- */
+        #result {
+            margin-top: 28px;
+            padding: 18px 22px;
+            border-radius: 18px;
+            background: rgba(42, 29, 24, 0.6);
+            border: 1px solid rgba(123, 112, 88, 0.2);
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        #result .placeholder {
+            color: #7b7058;
+            font-size: 15px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        #result .success {
+            color: #e8ddd0;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.6;
+            width: 100%;
+        }
+
+        #result .success strong {
+            color: #b58d65;
+            font-weight: 700;
+            background: rgba(123, 112, 88, 0.2);
+            padding: 2px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        #result .error {
+            color: #d4a08a;
+            font-size: 16px;
+            text-align: center;
+            line-height: 1.5;
+            width: 100%;
+        }
+
+        /* ----- адаптив ----- */
+        @media (max-width: 480px) {
+            .glass-card {
+                padding: 24px 18px;
+                border-radius: 28px;
+            }
+
+            .header {
+                gap: 14px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .header-right {
+                width: 100%;
+                text-align: center;
+            }
+
+            .subtitle {
+                padding-left: 0;
+                border-left: none;
+                border-top: 3px solid #987652;
+                padding-top: 8px;
+            }
+
+            .crest {
+                width: 65px;
+                height: 65px;
+
+            }
+
+            .header-text h1 {
+                font-size: 22px;
+            }
+
+            .input-row input[type="number"] {
+                font-size: 16px;
+                padding: 10px 14px;
+            }
+
+            #result .success {
+                font-size: 16px;
+            }
+
+            .btn {
+                font-size: 16px;
+                padding: 14px 16px;
+            }
+
+            .description {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glass-card">
+        <!-- Шапка -->
+        <div class="header">
+            <div class="crest">
+                <img src="https://s2.radikal.cloud/2026/07/23/heal-lighteeadacc3c3d2fd0f.png" alt="Герб" />
+            </div>
+            <div class="header-text">
+                <h1>Костоправы</h1>
+                <div class="description">
+                    Автоматический расчёт времени ношения вьюнковых костоправов по росту, потерянному здоровью и местам
+                    во рту.
+                    Нужно ввести потерянное здоровье от переломов и рост. Размер рта подбирается сам,
+                    меняйте вручную только если рот увеличен.
+                    <br>
+                    Отдельная благодарность
+                    <a href="https://docs.google.com/spreadsheets/d/1fIN4iCRJMxnkJruEO6ZwELiZgUUdahIUNrvKNuMAlDw/edit?gid=1429042970#gid=1429042970"
+                        target="_blank">таблице</a>,
+                    по которой сделан весь расчёт.
+                </div>
+            </div>
+        </div>
+
+        <!-- Здоровье -->
+        <div class="field">
+            <label>Здоровье <span class="hint">(отнятое переломами)</span></label>
+            <div class="input-row">
+                <input type="number" id="healthInput" min="0" max="100" step="0.1" value="30" />
+                <span class="unit">%</span>
+            </div>
+        </div>
+
+        <!-- Рост -->
+        <div class="field">
+            <label>Рост</label>
+            <div class="input-row">
+                <input type="number" id="heightInput" min="45" max="100" step="1" value="75" />
+                <span class="unit">%</span>
+            </div>
+        </div>
+
+        <!-- Места во рту -->
+        <div class="field">
+            <label>
+                Места во рту
+                <span class="hint" id="mouthHint">(по росту 2)</span>
+            </label>
+            <div class="input-row">
+                <input type="number" id="mouthInput" min="1" max="5" step="1" value="2" disabled />
+                <span class="unit">мест</span>
+            </div>
+            <div class="checkbox-wrap">
+                <input type="checkbox" id="manualCheck" />
+                <label for="manualCheck">Ввести самому</label>
+            </div>
+        </div>
+
+        <button class="btn" id="calcBtn">Рассчитать</button>
+
+        <div id="result">
+            <span class="placeholder">Введите данные и нажмите «Рассчитать»</span>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            // ---------- ТАБЛИЦА ЛЕЧЕНИЯ (рост -> массив {h, p}) ----------
+            const HEAL_TABLE = {
+                45: [
+                    { h: 5, p: 13.79 }, { h: 6, p: 25 }, { h: 9, p: 38 }, { h: 12, p: 53.32 },
+                    { h: 15, p: 67 }, { h: 18, p: 74 }, { h: 21, p: 88 }
+                ],
+                48: [
+                    { h: 5, p: 12 }, { h: 6, p: 22 }, { h: 9, p: 38.65 }, { h: 12, p: 51.23 },
+                    { h: 15, p: 65.44 }, { h: 18, p: 72 }, { h: 21, p: 86 }
+                ],
+                50: [
+                    { h: 5, p: 11 }, { h: 6, p: 22.57 }, { h: 9, p: 39.63 }, { h: 12, p: 52.19 },
+                    { h: 15, p: 66.65 }, { h: 18, p: 71.69 }, { h: 21, p: 86 }
+                ],
+                53: [
+                    { h: 6, p: 22.08 }, { h: 9, p: 37.79 }, { h: 12, p: 48.30 }, { h: 15, p: 64.04 },
+                    { h: 18, p: 74.68 }, { h: 21, p: 84 }, { h: 24, p: 79.57 }, { h: 30, p: 74.78 }
+                ],
+                55: [
+                    { h: 6, p: 20.71 }, { h: 9, p: 37.09 }, { h: 12, p: 50.62 }, { h: 15, p: 63.93 },
+                    { h: 18, p: 75.44 }, { h: 21, p: 84 }, { h: 24, p: 79.56 }, { h: 30, p: 89.03 },
+                    { h: 36, p: 69.79 }
+                ],
+                60: [
+                    { h: 5, p: 18.00 }, { h: 6, p: 18.38 }, { h: 9, p: 37.44 }, { h: 12, p: 49.84 },
+                    { h: 15, p: 65.70 }, { h: 18, p: 74.70 }, { h: 21, p: 82 }, { h: 24, p: 75 }
+                ],
+                65: [
+                    { h: 9, p: 21.11 }, { h: 12, p: 35.37 }, { h: 15, p: 47.27 }, { h: 18, p: 53.88 },
+                    { h: 21, p: 63.80 }, { h: 24, p: 69.69 }
+                ],
+                67: [
+                    { h: 9, p: 12.55 }, { h: 12, p: 29.25 }, { h: 15, p: 36.80 }, { h: 18, p: 49.08 },
+                    { h: 21, p: 52.20 }, { h: 24, p: 60.60 }
+                ],
+                68: [
+                    { h: 9, p: 6.52 }, { h: 12, p: 18.58 }, { h: 15, p: 33.32 }, { h: 18, p: 37.30 },
+                    { h: 21, p: 46.92 }, { h: 24, p: 56.19 }, { h: 30, p: 63.45 }
+                ],
+                70: [
+                    { h: 12, p: 13 }, { h: 15, p: 21.42 }, { h: 18, p: 35.35 }, { h: 21, p: 38.75 },
+                    { h: 24, p: 49.60 }
+                ],
+                72: [
+                    { h: 15, p: 20.16 }, { h: 18, p: 26.78 }, { h: 21, p: 32.17 }, { h: 24, p: 43 }
+                ],
+                73: [
+                    { h: 18, p: 10.96 }, { h: 21, p: 21.08 }, { h: 24, p: 29.01 }, { h: 30, p: 40 },
+                    { h: 36, p: 49.23 }, { h: 42, p: 66.48 }
+                ],
+                75: [
+                    { h: 18, p: 11.56 }, { h: 21, p: 24.52 }, { h: 24, p: 34.05 }, { h: 30, p: 46.79 },
+                    { h: 36, p: 53.34 }, { h: 42, p: 61.48 }, { h: 48, p: 62.65 }, { h: 54, p: 59.35 }
+                ],
+                76: [
+                    { h: 18, p: 8.01 }, { h: 21, p: 19.92 }, { h: 24, p: 34.59 }, { h: 30, p: 45.35 },
+                    { h: 36, p: 52.00 }, { h: 42, p: 60.71 }, { h: 48, p: 63.18 }
+                ],
+                77: [
+                    { h: 21, p: 15.64 }, { h: 24, p: 26.39 }, { h: 30, p: 39.03 }, { h: 36, p: 49.00 },
+                    { h: 42, p: 56.48 }, { h: 48, p: 59.00 }
+                ],
+                78: [
+                    { h: 24, p: 22.95 }, { h: 30, p: 35.01 }, { h: 36, p: 49.16 }, { h: 42, p: 53.57 },
+                    { h: 48, p: 59.51 }
+                ],
+                79: [
+                    { h: 24, p: 18.07 }, { h: 30, p: 31.65 }, { h: 36, p: 45.43 }, { h: 42, p: 52.20 },
+                    { h: 48, p: 62.22 }, { h: 54, p: 64.28 }
+                ],
+                80: [
+                    { h: 24, p: 16 }, { h: 30, p: 30.68 }, { h: 36, p: 45.85 }, { h: 42, p: 55.00 },
+                    { h: 48, p: 54.86 }
+                ],
+                81: [
+                    { h: 24, p: 15 }, { h: 30, p: 30.87 }, { h: 36, p: 38.33 }, { h: 42, p: 50.08 },
+                    { h: 48, p: 53.66 }
+                ],
+                82: [
+                    { h: 24, p: 12.24 }, { h: 30, p: 27.23 }, { h: 36, p: 38 }, { h: 42, p: 47.76 },
+                    { h: 48, p: 50.76 }
+                ],
+                83: [
+                    { h: 24, p: 4.95 }, { h: 30, p: 23.80 }, { h: 36, p: 37.37 }, { h: 42, p: 45.10 },
+                    { h: 48, p: 55.01 }
+                ],
+                84: [
+                    { h: 30, p: 18.15 }, { h: 36, p: 33.00 }, { h: 42, p: 46.43 }, { h: 48, p: 50.37 },
+                    { h: 54, p: 57.74 }
+                ],
+                85: [
+                    { h: 30, p: 15.77 }, { h: 36, p: 29.40 }, { h: 42, p: 36.90 }, { h: 48, p: 49.39 },
+                    { h: 54, p: 57.21 }, { h: 60, p: 58.72 }
+                ],
+                86: [
+                    { h: 30, p: 15.20 }, { h: 36, p: 26.49 }, { h: 42, p: 36.75 }, { h: 48, p: 46.32 },
+                    { h: 54, p: 56 }, { h: 60, p: 57.12 }
+                ],
+                87: [
+                    { h: 30, p: 10.00 }, { h: 36, p: 23.00 }, { h: 42, p: 34.53 }, { h: 48, p: 44.91 },
+                    { h: 54, p: 53.37 }, { h: 60, p: 55.69 }
+                ],
+                88: [
+                    { h: 30, p: 8 }, { h: 36, p: 20.00 }, { h: 42, p: 31.42 }, { h: 48, p: 41.51 },
+                    { h: 54, p: 52.28 }, { h: 60, p: 54.00 }, { h: 66, p: 59.33 }
+                ],
+                89: [
+                    { h: 36, p: 18.03 }, { h: 42, p: 32.38 }, { h: 48, p: 38 }, { h: 54, p: 47.23 },
+                    { h: 60, p: 53 }, { h: 66, p: 57 }, { h: 72, p: 59.60 }
+                ],
+                90: [
+                    { h: 36, p: 15 }, { h: 42, p: 31 }, { h: 48, p: 36.00 }, { h: 54, p: 41.95 },
+                    { h: 60, p: 52.82 }, { h: 66, p: 56.1 }, { h: 72, p: 59.70 }
+                ],
+                91: [
+                    { h: 36, p: 14.00 }, { h: 42, p: 30.00 }, { h: 48, p: 35 }, { h: 54, p: 45.92 },
+                    { h: 60, p: 52 }, { h: 66, p: 56 }, { h: 72, p: 62.40 }
+                ],
+                92: [
+                    { h: 36, p: 12.00 }, { h: 42, p: 25.00 }, { h: 48, p: 33 }, { h: 54, p: 42.90 },
+                    { h: 60, p: 52.12 }, { h: 66, p: 54.72 }, { h: 72, p: 57.72 }
+                ],
+                93: [
+                    { h: 36, p: 11.09 }, { h: 42, p: 20.00 }, { h: 48, p: 31.17 }, { h: 54, p: 39.19 },
+                    { h: 60, p: 45.56 }, { h: 66, p: 55.51 }, { h: 72, p: 56 }
+                ],
+                94: [
+                    { h: 42, p: 16.00 }, { h: 48, p: 28.26 }, { h: 54, p: 41.64 }, { h: 60, p: 48.53 },
+                    { h: 66, p: 53.81 }, { h: 72, p: 57.32 }
+                ],
+                95: [
+                    { h: 42, p: 14.15 }, { h: 48, p: 27.00 }, { h: 54, p: 38.69 }, { h: 60, p: 49.26 },
+                    { h: 66, p: 52.27 }, { h: 72, p: 56.11 }
+                ],
+                96: [
+                    { h: 42, p: 13.54 }, { h: 48, p: 26 }, { h: 54, p: 35.00 }, { h: 60, p: 46 },
+                    { h: 66, p: 51 }, { h: 72, p: 53.62 }
+                ],
+                97: [
+                    { h: 42, p: 13 }, { h: 48, p: 24.91 }, { h: 54, p: 33 }, { h: 60, p: 44 },
+                    { h: 66, p: 48 }, { h: 72, p: 51 }
+                ],
+                98: [
+                    { h: 42, p: 12.00 }, { h: 48, p: 22.85 }, { h: 54, p: 32.55 }, { h: 60, p: 42 },
+                    { h: 66, p: 45 }, { h: 72, p: 49 }
+                ],
+                99: [
+                    { h: 48, p: 19 }, { h: 54, p: 29.70 }, { h: 60, p: 40.00 }, { h: 66, p: 43.91 },
+                    { h: 72, p: 48 }
+                ],
+                100: [
+                    { h: 48, p: 15.26 }, { h: 54, p: 25.52 }, { h: 60, p: 34.55 }, { h: 66, p: 42.20 },
+                    { h: 72, p: 48.41 }
+                ]
+            };
+
+            function getMouthFromHeight(height) {
+                if (height >= 45 && height <= 65) return 1;
+                if (height >= 66 && height <= 75) return 2;
+                if (height >= 76 && height <= 84) return 3;
+                if (height >= 85 && height <= 94) return 4;
+                if (height >= 95 && height <= 100) return 5;
+                return 1;
+            }
+
+            function declHours(n) {
+                if (n % 10 === 1 && n % 100 !== 11) return 'час';
+                if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return 'часа';
+                return 'часов';
+            }
+
+            const healthInput = document.getElementById('healthInput');
+            const heightInput = document.getElementById('heightInput');
+            const mouthInput = document.getElementById('mouthInput');
+            const manualCheck = document.getElementById('manualCheck');
+            const calcBtn = document.getElementById('calcBtn');
+            const resultDiv = document.getElementById('result');
+            const mouthHint = document.getElementById('mouthHint');
+
+
+            function updateAutoMouth() {
+                const height = parseFloat(heightInput.value);
+                if (!isNaN(height) && height >= 45 && height <= 100) {
+                    const auto = getMouthFromHeight(height);
+                    mouthHint.textContent = '(авто: ' + auto + ')';
+                    if (!manualCheck.checked) {
+                        mouthInput.value = auto;
+                    }
+                } else {
+                    mouthHint.textContent = '(авто: —)';
+                }
+            }
+
+            heightInput.addEventListener('input', updateAutoMouth);
+
+            manualCheck.addEventListener('change', function () {
+                if (this.checked) {
+                    mouthInput.disabled = false;
+                    mouthInput.focus();
+                } else {
+                    mouthInput.disabled = true;
+                    updateAutoMouth();
+                }
+            });
+
+            function calculate() {
+                const health = parseFloat(healthInput.value);
+                const height = parseFloat(heightInput.value);
+                let mouth = parseInt(mouthInput.value, 10);
+
+                if (isNaN(health) || health < 0) {
+                    resultDiv.innerHTML = '<span class="error">Введите корректное значение здоровья (≥ 0).</span>';
+                    return;
+                }
+                if (isNaN(height) || height < 45 || height > 100) {
+                    resultDiv.innerHTML = '<span class="error">Рост должен быть от 45 до 100%.</span>';
+                    return;
+                }
+                if (isNaN(mouth) || mouth < 1 || mouth > 5) {
+                    resultDiv.innerHTML = '<span class="error">Количество мест во рту от 1 до 5.</span>';
+                    return;
+                }
+
+                const heightKey = Math.round(height);
+                if (!HEAL_TABLE.hasOwnProperty(heightKey)) {
+                    resultDiv.innerHTML =
+                        '<span class="error">Для роста ' + heightKey +
+                        '% нет данных. Доступны: ' + Object.keys(HEAL_TABLE).join(', ') + '.</span>';
+                    return;
+                }
+
+                if (health === 0) {
+                    resultDiv.innerHTML =
+                        '<span class="success">Здоровье не потеряно, лечение не требуется.</span>';
+                    return;
+                }
+
+                const entries = HEAL_TABLE[heightKey];
+                const sorted = entries.slice().sort((a, b) => a.h - b.h);
+
+                let found = null;
+                for (const entry of sorted) {
+                    const totalHeal = mouth * entry.p;
+                    if (totalHeal >= health - 0.0001) {
+                        found = entry;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    const hours = found.h;
+                    const healPerOne = found.p;
+                    const totalHeal = mouth * healPerOne;
+                    const hoursStr = Number.isInteger(hours) ? hours.toString() : hours.toFixed(1);
+
+                    resultDiv.innerHTML =
+                        '<span class="success">Для полного лечения вам нужно носить <strong>' +
+                        mouth + ' ' + (mouth === 1 ? 'костоправ' : 'костоправа') +
+                        '</strong> <strong>' + hoursStr + ' ' + declHours(hours) + '</strong>' +
+                        '<br><span style="font-size:14px; color:#7b7058;">' +
+                        'Каждый лечит ' + healPerOne.toFixed(2) + '%, всего ' + totalHeal.toFixed(2) +
+                        '% от потерянного здоровья.</span></span>';
+                } else {
+                    const maxTotal = Math.max(...sorted.map(e => mouth * e.p));
+                    resultDiv.innerHTML =
+                        '<span class="error">Не удаётся вылечить ' + health.toFixed(1) +
+                        '% потерянного здоровья.<br>' +
+                        'Максимальное лечение с ' + mouth + ' ' + (mouth === 1 ? 'костоправом' : 'костоправами') +
+                        ' составляет ' + maxTotal.toFixed(2) +
+                        '%.<br>Попробуйте увеличить количество мест во рту.</span>';
+                }
+            }
+
+            calcBtn.addEventListener('click', calculate);
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    const active = document.activeElement;
+                    if (active && (active.id === 'healthInput' || active.id === 'heightInput' || active.id ===
+                        'mouthInput')) {
+                        e.preventDefault();
+                        calculate();
+                    }
+                }
+            });
+
+            window.addEventListener('DOMContentLoaded', function () {
+                updateAutoMouth();
+                setTimeout(calculate, 80);
+            });
+
+        })();
+    </script>
+
+</body>
+
+</html>
