@@ -20,7 +20,7 @@
             align-items: center;
             justify-content: center;
             background: #2a1d18;
-            background-image: url('https://i.pinimg.com/1200x/36/19/ae/3619ae1b13628182a9e45468977819b9.jpg');
+            background-image: url('ngels.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -379,7 +379,7 @@
         <!-- Шапка -->
         <div class="header">
             <div class="crest">
-                <img src="https://s2.radikal.cloud/2026/07/23/heal-lighteeadacc3c3d2fd0f.png" alt="Герб" />
+               <img src="heal-light.png" alt="Герб" />
             </div>
             <div class="header-text">
                 <h1>Костоправы</h1>
@@ -612,6 +612,13 @@
                 if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return 'часа';
                 return 'часов';
             }
+            function getNearestHeight(height) {
+    const available = Object.keys(HEAL_TABLE).map(Number).sort((a, b) => a - b);
+    for (let val of available) {
+        if (val >= height) return val;
+    }
+    return available[available.length - 1];
+}
 
             const healthInput = document.getElementById('healthInput');
             const heightInput = document.getElementById('heightInput');
@@ -665,13 +672,10 @@
                     return;
                 }
 
-                const heightKey = Math.round(height);
-                if (!HEAL_TABLE.hasOwnProperty(heightKey)) {
-                    resultDiv.innerHTML =
-                        '<span class="error">Для роста ' + heightKey +
-                        '% нет данных. Доступны: ' + Object.keys(HEAL_TABLE).join(', ') + '.</span>';
-                    return;
-                }
+              let heightKey = Math.round(height);
+        if (!HEAL_TABLE.hasOwnProperty(heightKey)) {
+        heightKey = getNearestHeight(height);
+}
 
                 if (health === 0) {
                     resultDiv.innerHTML =
