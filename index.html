@@ -612,6 +612,20 @@
                 if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return 'часа';
                 return 'часов';
             }
+            function getEndDate(hours) {
+    const now = new Date();
+    const totalMinutes = Math.round(hours * 60);
+    now.setMinutes(now.getMinutes() + totalMinutes);
+    
+    const day = now.getDate();
+    const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
+                    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    const month = months[now.getMonth()];
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    
+    return day + ' ' + month + ' в ' + hh + ':' + mm;
+}
             function getEndTime(hours) {
     const now = new Date();
     const totalMinutes = Math.round(hours * 60); 
@@ -709,13 +723,13 @@
                     const healPerOne = found.p;
                     const totalHeal = mouth * healPerOne;
                     const hoursStr = Number.isInteger(hours) ? hours.toString() : hours.toFixed(1);
-                    const endTime = getEndTime(hours);
+                   const endDate = getEndDate(hours);
                     
                     resultDiv.innerHTML =
                     '<span class="success">Для полного лечения вам нужно носить <strong>' +
                     mouth + ' ' + (mouth === 1 ? 'костоправ' : 'костоправа') +
                         '</strong> <strong>' + hoursStr + ' ' + declHours(hours) + '</strong>.' +
-                    '<br>Снять в <strong>' + endTime + '</strong>' +
+                     '<br>Снять <strong>' + endDate + '</strong>' +
                     '<br><span style="font-size:14px; color:#7b7058;">' +
                 'Каждый лечит ' + healPerOne.toFixed(2) + '%, всего ' + totalHeal.toFixed(2) +
                     '% от потерянного здоровья.</span></span>';
