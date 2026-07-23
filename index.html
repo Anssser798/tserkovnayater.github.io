@@ -612,6 +612,15 @@
                 if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return 'часа';
                 return 'часов';
             }
+            function getEndTime(hours) {
+    const now = new Date();
+    const totalMinutes = Math.round(hours * 60); 
+    now.setMinutes(now.getMinutes() + totalMinutes);
+    
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    return hh + ':' + mm;
+}
             function getNearestHeight(height) {
     const available = Object.keys(HEAL_TABLE).map(Number).sort((a, b) => a - b);
     for (let val of available) {
@@ -700,14 +709,16 @@
                     const healPerOne = found.p;
                     const totalHeal = mouth * healPerOne;
                     const hoursStr = Number.isInteger(hours) ? hours.toString() : hours.toFixed(1);
-
+                    const endTime = getEndTime(hours);
+                    
                     resultDiv.innerHTML =
-                        '<span class="success">Для полного лечения вам нужно носить <strong>' +
-                        mouth + ' ' + (mouth === 1 ? 'костоправ' : 'костоправа') +
-                        '</strong> <strong>' + hoursStr + ' ' + declHours(hours) + '</strong>' +
-                        '<br><span style="font-size:14px; color:#7b7058;">' +
-                        'Каждый лечит ' + healPerOne.toFixed(2) + '%, всего ' + totalHeal.toFixed(2) +
-                        '% от потерянного здоровья.</span></span>';
+                    '<span class="success">Для полного лечения вам нужно носить <strong>' +
+                    mouth + ' ' + (mouth === 1 ? 'костоправ' : 'костоправа') +
+                        '</strong> <strong>' + hoursStr + ' ' + declHours(hours) + '</strong>.' +
+                    '<br>Снять в <strong>' + endTime + '</strong>' +
+                    '<br><span style="font-size:14px; color:#7b7058;">' +
+                'Каждый лечит ' + healPerOne.toFixed(2) + '%, всего ' + totalHeal.toFixed(2) +
+                    '% от потерянного здоровья.</span></span>';
                 } else {
                     const maxTotal = Math.max(...sorted.map(e => mouth * e.p));
                     resultDiv.innerHTML =
